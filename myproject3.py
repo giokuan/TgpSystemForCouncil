@@ -417,12 +417,12 @@ class Ui_mainForm(object):
         self.tbirth_edit.setEnabled(False)
         self.tbirth_edit.setGeometry(QtCore.QRect(150, 240, 171, 31))
         font = QtGui.QFont()
-        font.setPointSize(12)
+        font.setPointSize(14)
         self.tbirth_edit.setFont(font)
         self.tbirth_edit.setObjectName("tbirth_edit")
 
 
-        #CURRENT TEXTBOX
+        #CURRENT CHAPTER TEXTBOX
         self.current_edit = QtWidgets.QLineEdit(self.centralwidget)
         self.current_edit.setEnabled(False)
         self.current_edit.setGeometry(QtCore.QRect(150, 280, 171, 31))
