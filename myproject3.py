@@ -44,9 +44,9 @@ class Ui_mainForm(object):
         status=self.status_edit.text()
         address=self.address_edit.text()
 
-        self.conn=pymysql.connect(host="localhost", user="root", password="noahkuan03", db="myproject")
+        self.conn=pymysql.connect(host="localhost", user="root", password="noahkuan03", db="myproject3")
        
-        query=("INSERT INTO projecttau (last_name, first_name, aka, batch_name, T_birth, current_chapter, root_chapter, stat, address) VALUES  (%s, %s, %s, %s, %s, %s, %s, %s, %s)")
+        query=("INSERT INTO projecttau3 (last_name, first_name, aka, batch_name, T_birth, current_chapter, root_chapter, stat, address) VALUES  (%s, %s, %s, %s, %s, %s, %s, %s, %s)")
         cur=self.conn.cursor()
         data= cur.execute(query, (lname.upper(),fname.upper(),aka1.upper(),batch.upper(),tbirth.upper(),current.upper(),root.upper(),status.upper(),address.upper()))
         
@@ -105,10 +105,10 @@ class Ui_mainForm(object):
         status=self.status_edit.text()
         address=self.address_edit.text()
         
-        self.conn=pymysql.connect(host="localhost", user="root", password="noahkuan03", db="myproject")
+        self.conn=pymysql.connect(host="localhost", user="root", password="noahkuan03", db="myproject3")
         cur=self.conn.cursor()
 
-        sql = "UPDATE projecttau SET last_name = '"+ lname.upper() +"', first_name= '" + fname.upper() + "', aka = '" + aka1.upper() + "', batch_name= '" + batch.upper()\
+        sql = "UPDATE projecttau3 SET last_name = '"+ lname.upper() +"', first_name= '" + fname.upper() + "', aka = '" + aka1.upper() + "', batch_name= '" + batch.upper()\
                  + "', T_birth = '" + tbirth.upper() + "', current_chapter = '" + current.upper()+ "', root_chapter = '" + root.upper() + "', stat = '" + status.upper() + "', address = '"\
                   + address.upper() + "' WHERE member_id = '"+mem_id+"' "
         
@@ -154,7 +154,7 @@ class Ui_mainForm(object):
     def cell_click(self,columnCount,rowCount):
         self.cancel()
         self.editbutton.setEnabled(True)
-        self.conn=pymysql.connect(host="localhost", user="root", password="noahkuan03", db="myproject")
+        self.conn=pymysql.connect(host="localhost", user="root", password="noahkuan03", db="myproject3")
         cur=self.conn.cursor()
         item = self.tableWidget.selectedItems()
         i = (item[0].text())
@@ -162,7 +162,7 @@ class Ui_mainForm(object):
             return
 
         else:
-            cur.execute ("SELECT * from projecttau WHERE member_id=" +str(i))
+            cur.execute ("SELECT * from projecttau3 WHERE member_id=" +str(i))
             col = cur.fetchone()
             #print (row)           
             lname = col[1]
@@ -189,6 +189,7 @@ class Ui_mainForm(object):
     
     def loadData(self):
         self.searchEdit.clear()
+        self.search_chapter.clear()
         self.tableWidget.setColumnCount(10)
         self.tableWidget.setHorizontalHeaderLabels(['Member ID', ' Last Name', 'Firs Name', 'A.K.A','Batch Name', 'T-Birth','Current Chapter','Root Chapter', 'Status', 'Address'])
         
@@ -198,10 +199,10 @@ class Ui_mainForm(object):
                 host = "localhost",
                 user = "root",
                 password= "noahkuan03",
-                database = "myproject"
+                database = "myproject3"
             )
             mycursor = mydb.cursor()
-            mycursor.execute("SELECT * FROM projecttau ORDER BY last_name ASC" )
+            mycursor.execute("SELECT * FROM projecttau3 ORDER BY last_name ASC" )
             result = mycursor.fetchall()
             
             self.tableWidget.setRowCount(0)
@@ -223,15 +224,15 @@ class Ui_mainForm(object):
                 host = "localhost",
                 user = "root",
                 password= "noahkuan03",
-                database = "myproject"
+                database = "myproject3"
             )
             mycursor = mydb.cursor()
             se = self.searchEdit.text()
-            mycursor.execute("SELECT * FROM projecttau WHERE last_name = '"+se+"'" );
+            sc= self.search_chapter.text()
+            mycursor.execute("SELECT * FROM projecttau3 WHERE last_name = '"+se+"' OR current_chapter = '"+sc+"'");
             result = mycursor.fetchall()
           
             self.tableWidget.setRowCount(0)
-           
             for row_number, row_data in enumerate(result):
                 self.tableWidget.insertRow(row_number)
 
@@ -240,6 +241,34 @@ class Ui_mainForm(object):
                   
         except mc.Error as e:
             print ("Error Occured")
+
+
+    def specific_search(self):
+        row = 0
+       
+        mydb = mc.connect(
+            host = "localhost",
+            user = "root",
+            password= "noahkuan03",
+            database = "myproject3"
+        )
+        mycursor = mydb.cursor()
+        se = self.searchEdit.text()
+        sc= self.search_chapter.text()
+        mycursor.execute("SELECT * FROM projecttau3 WHERE last_name = '"+se+"' AND current_chapter = '"+sc+"'");
+        result = mycursor.fetchall()
+        if len(se) == 0 or len(sc) == 0:
+            self.messageBox("Information", " Last Name or Chapter Field  Cannot be empty!")
+
+        else:
+            self.tableWidget.setRowCount(0)
+            for row_number, row_data in enumerate(result):
+                self.tableWidget.insertRow(row_number)
+
+                for column_number, data in enumerate(row_data):
+                    self.tableWidget.setItem(row_number, column_number, QTableWidgetItem(str(data)))
+                  
+       
 
 
     def add_new_button(self):
@@ -317,11 +346,19 @@ class Ui_mainForm(object):
 
         #SEARCH TEXTBOX
         self.searchEdit = QtWidgets.QLineEdit(self.centralwidget)
-        self.searchEdit.setGeometry(QtCore.QRect(823, 40, 211, 31))
+        self.searchEdit.setGeometry(QtCore.QRect(598, 40, 211, 31))
         font = QtGui.QFont()
-        font.setPointSize(14)
+        font.setPointSize(12)
         self.searchEdit.setFont(font)
         self.searchEdit.setObjectName("searchEdit")
+
+        #SEARCH CHAPTER
+        self.search_chapter = QtWidgets.QLineEdit(self.centralwidget)
+        self.search_chapter.setGeometry(QtCore.QRect(823, 40, 211, 31))
+        font = QtGui.QFont()
+        font.setPointSize(12)
+        self.search_chapter.setFont(font)
+        self.search_chapter.setObjectName("search_chapter")
 
 
         #MEMBER ID TEXTBOX
@@ -380,7 +417,7 @@ class Ui_mainForm(object):
         self.tbirth_edit.setEnabled(False)
         self.tbirth_edit.setGeometry(QtCore.QRect(150, 240, 171, 31))
         font = QtGui.QFont()
-        font.setPointSize(14)
+        font.setPointSize(12)
         self.tbirth_edit.setFont(font)
         self.tbirth_edit.setObjectName("tbirth_edit")
 
@@ -627,12 +664,21 @@ class Ui_mainForm(object):
 
         #SEARCH BUTTON
         self.searchButton = QtWidgets.QPushButton(self.centralwidget)
-        self.searchButton.setGeometry(QtCore.QRect(640, 40, 171, 33))
+        self.searchButton.setGeometry(QtCore.QRect(465, 40, 121, 33))
         font = QtGui.QFont()
         font.setPointSize(10)
         self.searchButton.setFont(font)
         self.searchButton.setObjectName("searchButton")
         self.searchButton.clicked.connect(self.search)
+
+        #SPECIFIC SEARCH BUTTON
+        self.search_specific = QtWidgets.QPushButton(self.centralwidget)
+        self.search_specific.setGeometry(QtCore.QRect(330, 40, 121, 33))
+        font = QtGui.QFont()
+        font.setPointSize(10)
+        self.search_specific.setFont(font)
+        self.search_specific.setObjectName("searchButton")
+        self.search_specific.clicked.connect(self.specific_search)
 
         
         mainForm.setCentralWidget(self.centralwidget)
@@ -647,7 +693,7 @@ class Ui_mainForm(object):
 
     def retranslateUi(self, mainForm):
         _translate = QtCore.QCoreApplication.translate
-        mainForm.setWindowTitle(_translate("mainForm", "TAU GAMMA PHI TRISKELION GRAND FRATERNITY"))
+        mainForm.setWindowTitle(_translate("mainForm", "TAU GAMMA PHI TRISKELION GRAND FRATERNITY FOR COUNCIL"))
         self.status_label.setText(_translate("mainForm", "Status"))
         self.addres_label.setText(_translate("mainForm", "Address"))
         self.batch_label.setText(_translate("mainForm", "Batch Name"))
@@ -659,6 +705,7 @@ class Ui_mainForm(object):
         self.exitbutton.setText(_translate("mainForm", "Exit"))
         self.Savebutton.setText(_translate("mainForm", "Save"))
         self.searchButton.setText(_translate("mainForm", "Search"))
+        self.search_specific.setText(_translate("mainForm", "Search Specific"))
         self.tbirth_label.setText(_translate("mainForm", "T-Birth"))
         self.current_label.setText(_translate("mainForm", "Current Chapter"))
         self.lname_label.setText(_translate("mainForm", "Last Name"))
@@ -668,6 +715,7 @@ class Ui_mainForm(object):
         self.update_button.setText(_translate("mainForm", "Update"))
         self.tbirth_edit.setPlaceholderText(_translate("MainWindow", "MM/DD/YYYY"))
         self.searchEdit.setPlaceholderText(_translate("MainWindow", "Enter Last Name"))
+        self.search_chapter.setPlaceholderText(_translate("MainWindow", "Enter Chapter"))
 
 
 
