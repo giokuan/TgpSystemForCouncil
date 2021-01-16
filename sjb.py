@@ -14,7 +14,7 @@ class Ui_MainWindow(object):
         mess.setStyleSheet('QMessageBox {background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:1, stop:0 rgba(0, 0, 0, 0), stop:1 rgba(255, 255, 255, 255)); color: white;}\
             QPushButton{color: white; font-size: 16px; background-color: rgb(75,75,75);\
             border-radius: 5px; padding: 10px; text-align: center;} QPushButton:hover{color: rgb(0, 170, 127);}')
-        mess.setWindowIcon(QtGui.QIcon('ico_logo.ico'))
+        mess.setWindowIcon(QtGui.QIcon('logo/ico_logo.ico'))
         mess.setWindowTitle(title)
         mess.setText(message)
         mess.setIcon(QMessageBox.Information)
@@ -26,7 +26,7 @@ class Ui_MainWindow(object):
         msg.setStyleSheet('QMessageBox {background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:1, stop:0 rgba(0, 0, 0, 0), stop:1 rgba(255, 255, 255, 255)); color: white;}\
             QPushButton{color: white; font-size: 16px; background-color: rgb(75,75,75); \
             border-radius: 5px; padding: 10px; text-align: center;}QPushButton:hover{color: rgb(0, 170, 127);}') 
-        msg.setWindowIcon(QtGui.QIcon('ico_logo.ico'))
+        msg.setWindowIcon(QtGui.QIcon('logo/ico_logo.ico'))
         msg.setWindowTitle("Exit")
         msg.setText("Are you sure you wan't to Exit?")
         msg.setIcon(QMessageBox.Question)
@@ -461,11 +461,14 @@ class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(1129, 788)
+        MainWindow.setMaximumSize(QtCore.QSize(1129, 788))
+        MainWindow.setMinimumSize(QtCore.QSize(1129, 788))
+        MainWindow.setWindowFlags( QtCore.Qt.WindowCloseButtonHint )
         MainWindow.setStyleSheet("")
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap("ico_logo.ico"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon.addPixmap(QtGui.QPixmap("logo/ico_logo.ico"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         MainWindow.setWindowIcon(icon)
         
         #BACKGROUND LABEL
@@ -473,7 +476,7 @@ class Ui_MainWindow(object):
         self.label.setGeometry(QtCore.QRect(-10, 0, 1151, 771))
         self.label.setFrameShadow(QtWidgets.QFrame.Sunken)
         self.label.setText("")
-        self.label.setPixmap(QtGui.QPixmap("back2.jpg"))
+        self.label.setPixmap(QtGui.QPixmap("logo/back2.jpg"))
         self.label.setScaledContents(True)
         self.label.setObjectName("label")
         
@@ -481,7 +484,7 @@ class Ui_MainWindow(object):
         self.logo_label = QtWidgets.QLabel(self.centralwidget)
         self.logo_label.setGeometry(QtCore.QRect(30, 10, 131, 121))
         self.logo_label.setText("")
-        self.logo_label.setPixmap(QtGui.QPixmap("logo.png"))
+        self.logo_label.setPixmap(QtGui.QPixmap("logo/logo.png"))
         self.logo_label.setScaledContents(True)
         self.logo_label.setObjectName("logo_label")
         
@@ -795,7 +798,7 @@ class Ui_MainWindow(object):
             stop:1 rgba(255, 255, 255, 255));")
         self.camera_btn.setText("")
         icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap("camera.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon.addPixmap(QtGui.QPixmap("logo/camera.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.camera_btn.setIcon(icon)
         self.camera_btn.setObjectName("camera_btn")
 
