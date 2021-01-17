@@ -3,7 +3,7 @@ import mysql.connector as mc
 import pymysql
 from PyQt5.QtWidgets import QTableWidgetItem, QAbstractItemView, QVBoxLayout, QHBoxLayout, QHeaderView,QTableWidget
 from PyQt5.QtWidgets import QLineEdit
-from PyQt5.QtWidgets import QApplication, QWidget, QPushButton, QMessageBox
+from PyQt5.QtWidgets import QApplication, QWidget, QPushButton, QMessageBox,QFileDialog
 import sys
 
 
@@ -39,62 +39,87 @@ class Ui_MainWindow(object):
         if res == QMessageBox.Cancel:
             pass 
 
-    def insert_data(self):
-        lname=self.lname_edit.text()
-        fname=self.fname_edit.text()
-        aka1=self.aka_edit.text()
-        batch=self.batch_edit.text()
-        tbirth=self.tbirth_edit.text()
-        current=self.current_edit.text()
-        root=self.root_edit.text()
-        status=self.status_edit.text()
-        address=self.address_edit.text()
+    def browse_image(self):
+        filename = QFileDialog.getOpenFileName( caption = "Open file", directory=None, filter="Image (*.png * .jpg);;All Files(*.*)")   
+        self.addPic_edit.setText(filename[0])
+        self.load_image()
 
-        self.conn=pymysql.connect(host="localhost", user="root", password="noahkuan03", db="myproject3")
-       
-        query=("INSERT INTO projecttau3 (last_name, first_name, aka, batch_name, T_birth, current_chapter, root_chapter, stat, address) VALUES  (%s, %s, %s, %s, %s, %s, %s, %s, %s)")
-        cur=self.conn.cursor()
-        data= cur.execute(query, (lname.upper(),fname.upper(),aka1.upper(),batch.upper(),tbirth.upper(),current.upper(),root.upper(),status.upper(),address.upper()))
+    def load_image(self):
+        p = self.addPic_edit.text()
+        self.picture_label.setPixmap(QtGui.QPixmap(p)) 
+
+    def default(self):
+        self.addPic_edit.setText("logo/Men.png")
+        self.picture_label.setPixmap(QtGui.QPixmap("logo/Men.png")) 
+        pass
         
 
-        if (data):
-            msg=QMessageBox()
-            if    len(lname) == 0:
-                self.messageBox("Information", " Last Name Cannot be empty!")
-                return
-            elif  len(fname) == 0:
-                self.messageBox("Information", " First Name Cannot be empty!")
-                return
-            elif  len(aka1)  == 0:
-                self.messageBox("Information", " A.K.A Cannot be empty!")
-                return
-            elif  len(batch) == 0:
-                self.messageBox("Information", " Batch Name Cannot be empty!")
-                return
-            elif  len(tbirth)== 0:
-                self.messageBox("Information", " Triskelion Birth Cannot be empty!")
-                return
-            elif  len(current)== 0:
-                self.messageBox("Information", " Current Chapter Cannot be empty!")
-                return
-            elif  len(root)== 0:
-                self.messageBox("Information", " Root Chapter Cannot be empty!")
-                return
-            elif  len(status)== 0:
-                self.messageBox("Information", " Status Cannot be empty!")
-                return
-            elif  len(address) == 0:
-                self.messageBox("Information", " Address Cannot be empty!")
-                return
+    def insert_data(self):
+        p = self.addPic_edit.text()
+        if len(p) == 0:
+            self.messageBox("Add Photo","You have no photo selected, \n Default Photo will be use!")
+            self.default()
+        else:
+            
+        
+            with open(p, 'rb') as f:
+                m=f.read()
+
+            lname=self.lname_edit.text()
+            fname=self.fname_edit.text()
+            aka1=self.aka_edit.text()
+            batch=self.batch_edit.text()
+            tbirth=self.tbirth_edit.text()
+            current=self.current_edit.text()
+            root=self.root_edit.text()
+            status=self.status_edit.text()
+            address=self.address_edit.text()
+
+            self.conn=pymysql.connect(host="localhost", user="root", password="noahkuan03", db="myproject3")
+       
+            query=("INSERT INTO projecttau3 (last_name, first_name, aka, batch_name, T_birth, current_chapter, root_chapter, stat, address,photo) VALUES  (%s,%s, %s, %s, %s, %s, %s, %s, %s, %s)")
+            cur=self.conn.cursor()
+            data= cur.execute(query, (lname.upper(),fname.upper(),aka1.upper(),batch.upper(),tbirth.upper(),current.upper(),root.upper(),status.upper(),address.upper(),m))
+        
+
+            if (data):
+                msg=QMessageBox()
+                if    len(lname) == 0:
+                    self.messageBox("Information", " Last Name Cannot be empty!")
+                    return
+                elif  len(fname) == 0:
+                    self.messageBox("Information", " First Name Cannot be empty!")
+                    return
+                elif  len(aka1)  == 0:
+                    self.messageBox("Information", " A.K.A Cannot be empty!")
+                    return
+                elif  len(batch) == 0:
+                    self.messageBox("Information", " Batch Name Cannot be empty!")
+                    return
+                elif  len(tbirth)== 0:
+                    self.messageBox("Information", " Triskelion Birth Cannot be empty!")
+                    return
+                elif  len(current)== 0:
+                    self.messageBox("Information", " Current Chapter Cannot be empty!")
+                    return
+                elif  len(root)== 0:
+                    self.messageBox("Information", " Root Chapter Cannot be empty!")
+                    return
+                elif  len(status)== 0:
+                    self.messageBox("Information", " Status Cannot be empty!")
+                    return
+                elif  len(address) == 0:
+                    self.messageBox("Information", " Address Cannot be empty!")
+                    return
                 
 
-            else:
-                self.messageBox("Saved", " Member Data Saved")
-                self.conn.commit()
-                #self.Savebutton.setEnabled(False)
-                #self.addbuttom.setEnabled(True)
-                self.cancel()
-                self.loadData()
+                else:
+                    self.messageBox("Saved", " Member Data Saved")
+                    self.conn.commit()
+                    #self.Savebutton.setEnabled(False)
+                    #self.addbuttom.setEnabled(True)
+                    self.cancel()
+                    self.loadData()
 
     def cell_click_disabledTextbox(self):
         self.add_btn.setEnabled(True)
@@ -150,6 +175,7 @@ class Ui_MainWindow(object):
             root = col[7]
             status = col[8]
             add = col[9]
+            pic = col[10]
 
         self.id_edit.setText(i)
         self.lname_edit.setText(lname)
@@ -162,6 +188,11 @@ class Ui_MainWindow(object):
         self.status_edit.setText(status)
         self.address_edit.setText(add)
         self.cell_click_disabledTextbox()
+
+        with open('logo/pic.png', 'wb') as f:
+                f.write(pic)
+                self.addPic_edit.setText('log/pic.png')
+                self.picture_label.setPixmap(QtGui.QPixmap("logo/pic.png"))
 
 
         
@@ -191,6 +222,9 @@ class Ui_MainWindow(object):
             print ("Error Occured")
 
     def update(self):
+        p = self.addPic_edit.text() 
+        with open(p, 'rb') as f:
+            m=f.read()
         
         mem_id=self.id_edit.text()
         lname=self.lname_edit.text()
@@ -208,7 +242,7 @@ class Ui_MainWindow(object):
 
         sql = "UPDATE projecttau3 SET last_name = '"+ lname.upper() +"', first_name= '" + fname.upper() + "', aka = '" + aka1.upper() + "', batch_name= '" + batch.upper()\
                  + "', T_birth = '" + tbirth.upper() + "', current_chapter = '" + current.upper()+ "', root_chapter = '" + root.upper() + "', stat = '" + status.upper() + "', address = '"\
-                  + address.upper() + "' WHERE member_id = '"+mem_id+"' "
+                  + address.upper() + "', photo= %s WHERE member_id = '"+mem_id+"' "
         
         if (sql):
             msg=QMessageBox()
@@ -242,7 +276,7 @@ class Ui_MainWindow(object):
                 
 
             else:
-                cur.execute(sql)
+                cur.execute(sql,m)
                 self.messageBox("Updated", " Member Data Updated")
                 self.conn.commit()
                 self.loadData()
@@ -265,6 +299,7 @@ class Ui_MainWindow(object):
         self.save_btn.setEnabled(True)
         self.cancel_btn.setEnabled(True)
         self.refresh_btn.setEnabled(False)
+        self.camera_btn.setEnabled(True)
 
         self.lname_edit.clear()
         self.fname_edit.clear()
@@ -275,6 +310,7 @@ class Ui_MainWindow(object):
         self.root_edit.clear()
         self.status_edit.clear()
         self.address_edit.clear()
+        self.default()
 
         self.lname_edit.setStyleSheet("background-color: rgb(24, 24, 24);color: rgb(6, 254, 192)")
         self.fname_edit.setStyleSheet("background-color: rgb(24, 24, 24);color: rgb(6, 254, 192)")
@@ -305,6 +341,7 @@ class Ui_MainWindow(object):
         self.cancel_btn.setEnabled(False)
         self.refresh_btn.setEnabled(True)
         self.edit_btn.setEnabled(True)
+        self.camera_btn.setEnabled(False)
 
         self.lname_edit.setStyleSheet("background-color: rgb(207, 207, 207);color: rgb(24, 24, 24)")
         self.fname_edit.setStyleSheet("background-color: rgb(207, 207, 207);color: rgb(24, 24, 24)")
@@ -345,6 +382,7 @@ class Ui_MainWindow(object):
         self.save_btn.setEnabled(False)
         self.cancel_btn.setEnabled(False)
         self.refresh_btn.setEnabled(True)
+        self.default()
 
         self.lname_edit.setStyleSheet("background-color: rgb(207, 207, 207);color: rgb(24, 24, 24)")
         self.fname_edit.setStyleSheet("background-color: rgb(207, 207, 207);color: rgb(24, 24, 24)")
@@ -377,6 +415,7 @@ class Ui_MainWindow(object):
             self.add_btn.setEnabled(False)
             self.refresh_btn.setEnabled(False)
             self.edit_btn.setEnabled(False)
+            self.camera_btn.setEnabled(True)
             self.update_btn.show()
             self.save_btn.hide()
 
@@ -396,6 +435,8 @@ class Ui_MainWindow(object):
         self.advance_search_btn.hide()
         self.search_lname_edit.hide()
         self.search_fname_edit.hide()
+        self.search_lname_edit.clear()
+        self.search_fname_edit.clear()
 
     def advance_radio(self):
         self.search_btn.hide()
@@ -403,6 +444,7 @@ class Ui_MainWindow(object):
         self.advance_search_btn.show()
         self.search_lname_edit.show()
         self.search_fname_edit.show()
+        self.search_edit.clear()
 
     def search(self):    
         row = 0
@@ -454,7 +496,8 @@ class Ui_MainWindow(object):
 
                 for column_number, data in enumerate(row_data):
                     self.tableWidget.setItem(row_number, column_number, QTableWidgetItem(str(data)))
-      
+    
+    
 
            
 
@@ -785,6 +828,8 @@ class Ui_MainWindow(object):
         self.picture_label.setFrameShadow(QtWidgets.QFrame.Raised)
         self.picture_label.setText("")
         self.picture_label.setObjectName("picture_label")
+        self.picture_label.setPixmap(QtGui.QPixmap("logo/Men.png")) 
+        self.picture_label.setScaledContents(True)
         
 
         
@@ -801,6 +846,19 @@ class Ui_MainWindow(object):
         icon.addPixmap(QtGui.QPixmap("logo/camera.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.camera_btn.setIcon(icon)
         self.camera_btn.setObjectName("camera_btn")
+        self.camera_btn.clicked.connect(self.browse_image)
+        self.camera_btn.setEnabled(False)
+
+
+        
+
+        #ADD PICTURE CAMERA TEXTBOX
+        self.addPic_edit = QtWidgets.QLineEdit(self.centralwidget)
+        self.addPic_edit.setGeometry(QtCore.QRect(90, 400, 71, 21))
+        self.addPic_edit.setStyleSheet("background-color: rgb(207, 207, 207);color: rgb(24, 24, 24)")
+        self.addPic_edit.setObjectName("addPic_edit")
+        self.addPic_edit.setText("logo/Men.png")
+        self.addPic_edit.hide()
 
         #SEARCH FRAME
         self.search_frame = QtWidgets.QFrame(self.centralwidget)
@@ -1002,6 +1060,7 @@ class Ui_MainWindow(object):
         self.address_label.raise_()
         self.address_edit.raise_()
         self.camera_btn.raise_()
+        self.addPic_edit.raise_()
         self.root_label.raise_()
         self.root_edit.raise_()
         self.search_frame.raise_()
@@ -1081,6 +1140,9 @@ class Ui_MainWindow(object):
         self.advance_radioButton.setText(_translate("MainWindow", "Advance Sesarch"))
         self.search_btn.setText(_translate("MainWindow", "Search"))
         self.advance_search_btn.setText(_translate("MainWindow", "Advance Search"))
+        self.search_lname_edit.setPlaceholderText(_translate("MainWindow", "Enter Last Name"))
+        self.search_fname_edit.setPlaceholderText(_translate("MainWindow", "Enter First Name"))
+        self.search_edit.setPlaceholderText(_translate("MainWindow", "Enter Last Name or Chapter"))
 
         self.add_btn.setText(_translate("MainWindow", "Add New"))
         self.save_btn.setText(_translate("MainWindow", "Save"))
