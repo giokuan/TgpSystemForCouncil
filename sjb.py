@@ -312,6 +312,7 @@ class Ui_MainWindow(object):
         self.status_edit.clear()
         self.address_edit.clear()
         self.id_edit.clear()
+        self.search_edit.clear()
         self.default()
 
         self.lname_edit.setStyleSheet("background-color: rgb(24, 24, 24);color: rgb(6, 254, 192)")
