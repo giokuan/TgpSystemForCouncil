@@ -114,7 +114,7 @@ class Ui_MainWindow(object):
                 
 
                 else:
-                    self.messageBox("Saved", " Member Data Saved")
+                    self.messageBox("Tau Gamma Phi", " Member Data Saved")
                     self.conn.commit()
                     #self.Savebutton.setEnabled(False)
                     #self.addbuttom.setEnabled(True)
@@ -153,8 +153,7 @@ class Ui_MainWindow(object):
 
 
     def cell_click(self,columnCount,rowCount):
-        #self.cancel()
-        #self.editbutton.setEnabled(True)
+
         self.conn=pymysql.connect(host="localhost", user="root", password="noahkuan03", db="myproject3")
         cur=self.conn.cursor()
         item = self.tableWidget.selectedItems()
@@ -191,7 +190,7 @@ class Ui_MainWindow(object):
 
         with open('logo/pic.png', 'wb') as f:
                 f.write(pic)
-                self.addPic_edit.setText('log/pic.png')
+                self.addPic_edit.setText('logo/pic.png')
                 self.picture_label.setPixmap(QtGui.QPixmap("logo/pic.png"))
 
 
@@ -277,10 +276,12 @@ class Ui_MainWindow(object):
 
             else:
                 cur.execute(sql,m)
-                self.messageBox("Updated", " Member Data Updated")
+                self.messageBox("Tau Gamma Phi", " Member Data Updated")
                 self.conn.commit()
                 self.loadData()
-                self.cancel()
+                self.cell_click_disabledTextbox()
+
+                #self.cancel()
 
 
     def add(self):
@@ -310,6 +311,7 @@ class Ui_MainWindow(object):
         self.root_edit.clear()
         self.status_edit.clear()
         self.address_edit.clear()
+        self.id_edit.clear()
         self.default()
 
         self.lname_edit.setStyleSheet("background-color: rgb(24, 24, 24);color: rgb(6, 254, 192)")
@@ -352,6 +354,18 @@ class Ui_MainWindow(object):
         self.root_edit.setStyleSheet("background-color: rgb(207, 207, 207);color: rgb(24, 24, 24)")
         self.status_edit.setStyleSheet("background-color: rgb(207, 207, 207);color: rgb(24, 24, 24)")
         self.address_edit.setStyleSheet("background-color: rgb(207, 207, 207);color: rgb(24, 24, 24)")
+
+        self.lname_edit.clear()
+        self.fname_edit.clear()
+        self.aka_edit.clear()
+        self.batch_edit.clear()
+        self.tbirth_edit.clear()
+        self.current_edit.clear()
+        self.root_edit.clear()
+        self.status_edit.clear()
+        self.address_edit.clear()
+        self.id_edit.clear()
+        self.default()
 
         
     def refresh(self):
@@ -398,7 +412,7 @@ class Ui_MainWindow(object):
     def edit(self):
         mem_id = self.id_edit.text()
         if len(mem_id) == 0:
-            self.messageBox("Information", "No Data Found")
+            self.messageBox("Tau Gamma Phi", "No Data Found")
             return
         else:
             self.lname_edit.setEnabled(True)
@@ -666,6 +680,10 @@ class Ui_MainWindow(object):
         self.id_edit.setStyleSheet("background-color: rgb(207, 207, 207);color: rgb(24, 24, 24)")
         self.id_edit.setObjectName("id_edit")
         self.id_edit.setEnabled(False)
+        font = QtGui.QFont()
+        font.setBold(True)
+        font.setPointSize(10)
+        self.id_edit.setFont(font)
         
         
         #LAST NAME LABEL
@@ -683,6 +701,10 @@ class Ui_MainWindow(object):
         self.lname_edit.setStyleSheet("background-color: rgb(207, 207, 207);color: rgb(24, 24, 24)")
         self.lname_edit.setObjectName("lname_edit")
         self.lname_edit.setEnabled(False)
+        font = QtGui.QFont()
+        font.setBold(True)
+        font.setPointSize(10)
+        self.lname_edit.setFont(font)
         
 
         #FIRSTNAME LABEL
@@ -700,6 +722,10 @@ class Ui_MainWindow(object):
         self.fname_edit.setStyleSheet("background-color: rgb(207, 207, 207);color: rgb(24, 24, 24)")
         self.fname_edit.setObjectName("fname_edit")
         self.fname_edit.setEnabled(False)
+        font = QtGui.QFont()
+        font.setBold(True)
+        font.setPointSize(10)
+        self.fname_edit.setFont(font)
 
 
         #AKA LABEL
@@ -717,6 +743,10 @@ class Ui_MainWindow(object):
         self.aka_edit.setStyleSheet("background-color: rgb(207, 207, 207);color: rgb(24, 24, 24)")
         self.aka_edit.setObjectName("aka_edit")
         self.aka_edit.setEnabled(False)
+        font = QtGui.QFont()
+        font.setBold(True)
+        font.setPointSize(10)
+        self.aka_edit.setFont(font)
         
         
         #BATCH NAME LABEL
@@ -734,6 +764,10 @@ class Ui_MainWindow(object):
         self.batch_edit.setStyleSheet("background-color: rgb(207, 207, 207);color: rgb(24, 24, 24)")
         self.batch_edit.setObjectName("batch_edit")
         self.batch_edit.setEnabled(False)
+        font = QtGui.QFont()
+        font.setBold(True)
+        font.setPointSize(10)
+        self.batch_edit.setFont(font)
 
 
         #T-BIRTH LABEL
@@ -751,6 +785,10 @@ class Ui_MainWindow(object):
         self.tbirth_edit.setStyleSheet("background-color: rgb(207, 207, 207);color: rgb(24, 24, 24)")
         self.tbirth_edit.setObjectName("tbirth_edit")
         self.tbirth_edit.setEnabled(False)
+        font = QtGui.QFont()
+        font.setBold(True)
+        font.setPointSize(10)
+        self.tbirth_edit.setFont(font)
 
         
         #STATUS LABEL
@@ -768,6 +806,10 @@ class Ui_MainWindow(object):
         self.status_edit.setStyleSheet("background-color: rgb(207, 207, 207);color: rgb(24, 24, 24)")
         self.status_edit.setObjectName("status_edit")
         self.status_edit.setEnabled(False)
+        font = QtGui.QFont()
+        font.setBold(True)
+        font.setPointSize(10)
+        self.status_edit.setFont(font)
 
 
         #CURRENT CHAPTER LABEL
@@ -785,6 +827,10 @@ class Ui_MainWindow(object):
         self.current_edit.setStyleSheet("background-color: rgb(207, 207, 207);color: rgb(24, 24, 24)")
         self.current_edit.setObjectName("current_edit")
         self.current_edit.setEnabled(False)
+        font = QtGui.QFont()
+        font.setBold(True)
+        font.setPointSize(10)
+        self.current_edit.setFont(font)
 
         #ADDRESS LABEL
         self.address_label = QtWidgets.QLabel(self.centralwidget)
@@ -801,6 +847,10 @@ class Ui_MainWindow(object):
         self.address_edit.setStyleSheet("background-color: rgb(207, 207, 207);color: rgb(24, 24, 24)")
         self.address_edit.setObjectName("address_edit")
         self.address_edit.setEnabled(False)
+        font = QtGui.QFont()
+        font.setBold(True)
+        font.setPointSize(10)
+        self.address_edit.setFont(font)
 
        
         #ROOT CHAPTER LABEL
@@ -816,9 +866,12 @@ class Ui_MainWindow(object):
         self.root_edit = QtWidgets.QLineEdit(self.centralwidget)
         self.root_edit.setGeometry(QtCore.QRect(780, 500, 251, 31))
         self.root_edit.setStyleSheet("background-color: rgb(207, 207, 207);color: rgb(24, 24, 24)")
-        
         self.root_edit.setObjectName("root_edit")
         self.root_edit.setEnabled(False)
+        font = QtGui.QFont()
+        font.setBold(True)
+        font.setPointSize(10)
+        self.root_edit.setFont(font)
 
 
         #PICTURE LABEL
@@ -901,6 +954,10 @@ class Ui_MainWindow(object):
         self.search_edit.setGeometry(QtCore.QRect(20, 90, 211, 31))
         self.search_edit.setStyleSheet("background-color: rgb(207, 207, 207);")
         self.search_edit.setObjectName("search_lname_edit")
+        font = QtGui.QFont()
+        font.setBold(True)
+        font.setPointSize(10)
+        self.search_edit.setFont(font)
 
 
         
@@ -926,6 +983,10 @@ class Ui_MainWindow(object):
         self.search_lname_edit.setStyleSheet("background-color: rgb(207, 207, 207);")
         self.search_lname_edit.setObjectName("search_lname_edit")
         self.search_lname_edit.hide()
+        font = QtGui.QFont()
+        font.setBold(True)
+        font.setPointSize(10)
+        self.search_lname_edit.setFont(font)
 
         #ADVANCE SEARCH EDIT FIRST NAME
         self.search_fname_edit = QtWidgets.QLineEdit(self.search_frame)
@@ -933,12 +994,13 @@ class Ui_MainWindow(object):
         self.search_fname_edit.setStyleSheet("background-color: rgb(207, 207, 207);")
         self.search_fname_edit.setObjectName("search_fname_edit")
         self.search_fname_edit.hide()
+        self.search_fname_edit.setFont(font)
 
 
         
         #ADD NEW BUTTON
         self.add_btn = QtWidgets.QPushButton(self.centralwidget)
-        self.add_btn.setGeometry(QtCore.QRect(40, 680, 101, 41))
+        self.add_btn.setGeometry(QtCore.QRect(40, 680, 101, 41)) 
         font = QtGui.QFont()
         font.setBold(True)
         font.setWeight(75)
@@ -948,6 +1010,9 @@ class Ui_MainWindow(object):
             stop:1 rgba(255, 255, 255, 255));")
         self.add_btn.setObjectName("add_btn")
         self.add_btn.clicked.connect(self.add)
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap("logo/reg.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.add_btn.setIcon(icon)
 
         
         #SAVE BUTTON
@@ -963,6 +1028,9 @@ class Ui_MainWindow(object):
         self.save_btn.setObjectName("save_btn")
         self.save_btn.setEnabled(False)
         self.save_btn.clicked.connect(self.insert_data)
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap("logo/save.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.save_btn.setIcon(icon)
 
         #UPDATE BUTTON
         self.update_btn = QtWidgets.QPushButton(self.centralwidget)
@@ -977,6 +1045,9 @@ class Ui_MainWindow(object):
         self.update_btn.setObjectName("update_btn")
         self.update_btn.hide()
         self.update_btn.clicked.connect(self.update)
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap("logo/update.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.update_btn.setIcon(icon)
 
 
         
@@ -993,6 +1064,9 @@ class Ui_MainWindow(object):
         self.cancel_btn.setObjectName("cancel_btn")
         self.cancel_btn.clicked.connect(self.cancel)
         self.cancel_btn.setEnabled(False)
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap("logo/cancel.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.cancel_btn.setIcon(icon)
 
         
         #EDIT BUTTON
@@ -1007,6 +1081,9 @@ class Ui_MainWindow(object):
             stop:1 rgba(255, 255, 255, 255));")
         self.edit_btn.setObjectName("edit_btn")
         self.edit_btn.clicked.connect(self.edit)
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap("logo/edit.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.edit_btn.setIcon(icon)
 
         
         #REFRESH BUTTON
@@ -1021,6 +1098,9 @@ class Ui_MainWindow(object):
             stop:1 rgba(255, 255, 255, 255));")
         self.refresh_btn.setObjectName("refresh_btn")
         self.refresh_btn.clicked.connect(self.refresh)
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap("logo/refresh.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.refresh_btn.setIcon(icon)
 
         
         #EXIT BUTTON
@@ -1035,6 +1115,9 @@ class Ui_MainWindow(object):
             stop:1 rgba(255, 255, 255, 255));")
         self.exit_btn.setObjectName("exit_btn")
         self.exit_btn.clicked.connect(self.exit_app)
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap("logo/exit.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.exit_btn.setIcon(icon)
         
         self.label.raise_()
         self.logo_label.raise_()
@@ -1143,6 +1226,7 @@ class Ui_MainWindow(object):
         self.search_lname_edit.setPlaceholderText(_translate("MainWindow", "Enter Last Name"))
         self.search_fname_edit.setPlaceholderText(_translate("MainWindow", "Enter First Name"))
         self.search_edit.setPlaceholderText(_translate("MainWindow", "Enter Last Name or Chapter"))
+        self.tbirth_edit.setPlaceholderText(_translate("MainWindow", "MM/DD/YYYY"))
 
         self.add_btn.setText(_translate("MainWindow", "Add New"))
         self.save_btn.setText(_translate("MainWindow", "Save"))
